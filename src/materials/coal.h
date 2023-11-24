@@ -1,5 +1,5 @@
 #pragma once
-#include "../box.h"
+#include "../cube.h"
 #include <cmath>
 
 class Coal : public Cube

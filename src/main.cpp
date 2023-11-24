@@ -11,9 +11,10 @@
 #include "color.h"
 #include "intersect.h"
 #include "object.h"
-#include "box.h"
+#include "cube.h"
 #include "light.h"
 #include "camera.h"
+#include "skybox.h"
 
 #include "./materials/grass.h"
 #include "./materials/stone.h"
@@ -93,7 +94,7 @@ Color castRay(const glm::vec3& rayOrigin, const glm::vec3& rayDirection, const s
     }
 
     if (!intersect.isIntersecting || recursion == MAX_RECURSION) {
-        return Color(173, 216, 230);
+        return Skybox::getColor(rayOrigin, rayDirection);
     }
 
 
@@ -135,14 +136,6 @@ Color castRay(const glm::vec3& rayOrigin, const glm::vec3& rayDirection, const s
 } 
 
 void setUp() {
-    Material grass = {
-        Color(80, 0, 0),
-        0.85,
-        0.0,
-        0.50f,
-        0.0f,
-        0.0f
-    };
 
     Material stone = {
         Color(0, 0, 0),
@@ -153,32 +146,6 @@ void setUp() {
         0.0f
     };
     
-    Material coal = {
-        Color(0, 0, 0),
-        0.85,
-        0.0,
-        0.50f,
-        0.0f,
-        0.0f
-    };
-    
-    Material rail = {
-        Color(0, 0, 0),
-        0.85,
-        0.0,
-        0.50f,
-        0.0f,
-        0.0f
-    };
-
-    Material cobblestone = {
-        Color(0, 0, 0),
-        0.85,
-        0.0,
-        0.50f,
-        0.0f,
-        0.0f
-    };
 
     Material obsidian = {
         Color(0, 0, 0),
@@ -210,7 +177,7 @@ void setUp() {
 
 
     // Grama
-    objects.push_back(new Grass(glm::vec3(-2.5f, -0.5f, -4.5f), glm::vec3(2.5f, 0.5f, 1.5f), grass));
+    objects.push_back(new Grass(glm::vec3(-2.5f, -0.5f, -4.5f), glm::vec3(2.5f, 0.5f, 1.5f), stone));
 
     // Piedra
     objects.push_back(new Stone(glm::vec3(-2.5f, -0.5f, 0.5f), glm::vec3(-1.5f, -5.5f, 1.5f), stone));
@@ -239,33 +206,33 @@ void setUp() {
     objects.push_back(new Stone(glm::vec3(-0.5f, -4.5f, 0.5f), glm::vec3(0.5f, -5.0f, 1.5f), stone));
 
     // Riel
-    objects.push_back(new Rail(glm::vec3(-1.5f, -5.5f, -0.5f), glm::vec3(2.5f, -4.5f, -1.5f), rail));
+    objects.push_back(new Rail(glm::vec3(-1.5f, -5.5f, -0.5f), glm::vec3(2.5f, -4.5f, -1.5f), stone));
 
     // Piedra labrada
-    objects.push_back(new Cobblestone(glm::vec3(-1.5f, -3.5f, -4.5f), glm::vec3(-0.5f, -4.5f, -3.5f), cobblestone));
-    objects.push_back(new Cobblestone(glm::vec3(-0.5f, -3.5f, -4.5f), glm::vec3(0.5f, -4.5f, -3.5f), cobblestone));
-    objects.push_back(new Cobblestone(glm::vec3(0.5f, -0.5f, -4.5f), glm::vec3(1.5f, -1.5f, -3.5f), cobblestone));
-    objects.push_back(new Cobblestone(glm::vec3(-1.5f, -1.5f, -4.5f), glm::vec3(0.5f, -2.5f, -3.5f), cobblestone));
-    objects.push_back(new Cobblestone(glm::vec3(0.5f, -2.5f, -4.5f), glm::vec3(1.5f, -3.5f, -3.5f), cobblestone));
-    objects.push_back(new Cobblestone(glm::vec3(-0.5f, -0.5f, -4.5f), glm::vec3(0.5f, -1.5f, -3.5f), cobblestone));
-    objects.push_back(new Cobblestone(glm::vec3(-0.5f, -4.5f, -2.5f), glm::vec3(0.5f, -5.5f, -1.5f), cobblestone));
-    objects.push_back(new Cobblestone(glm::vec3(1.5f, -4.5f, -3.5f), glm::vec3(2.5f, -5.5f, -2.5f), cobblestone));
+    objects.push_back(new Cobblestone(glm::vec3(-1.5f, -3.5f, -4.5f), glm::vec3(-0.5f, -4.5f, -3.5f), stone));
+    objects.push_back(new Cobblestone(glm::vec3(-0.5f, -3.5f, -4.5f), glm::vec3(0.5f, -4.5f, -3.5f), stone));
+    objects.push_back(new Cobblestone(glm::vec3(0.5f, -0.5f, -4.5f), glm::vec3(1.5f, -1.5f, -3.5f), stone));
+    objects.push_back(new Cobblestone(glm::vec3(-1.5f, -1.5f, -4.5f), glm::vec3(0.5f, -2.5f, -3.5f), stone));
+    objects.push_back(new Cobblestone(glm::vec3(0.5f, -2.5f, -4.5f), glm::vec3(1.5f, -3.5f, -3.5f), stone));
+    objects.push_back(new Cobblestone(glm::vec3(-0.5f, -0.5f, -4.5f), glm::vec3(0.5f, -1.5f, -3.5f), stone));
+    objects.push_back(new Cobblestone(glm::vec3(-0.5f, -4.5f, -2.5f), glm::vec3(0.5f, -5.5f, -1.5f), stone));
+    objects.push_back(new Cobblestone(glm::vec3(1.5f, -4.5f, -3.5f), glm::vec3(2.5f, -5.5f, -2.5f), stone));
     
-    objects.push_back(new Cobblestone(glm::vec3(-2.5f, -0.5f, -3.5f), glm::vec3(-1.5f, -1.5f, -2.5f), cobblestone));
-    objects.push_back(new Cobblestone(glm::vec3(-2.5f, -0.5f, -0.5f), glm::vec3(-1.5f, -1.5f, 0.5f), cobblestone));
-    objects.push_back(new Cobblestone(glm::vec3(-2.5f, -3.5f, -0.5f), glm::vec3(-1.5f, -4.5f, 0.5f), cobblestone));
+    objects.push_back(new Cobblestone(glm::vec3(-2.5f, -0.5f, -3.5f), glm::vec3(-1.5f, -1.5f, -2.5f), stone));
+    objects.push_back(new Cobblestone(glm::vec3(-2.5f, -0.5f, -0.5f), glm::vec3(-1.5f, -1.5f, 0.5f), stone));
+    objects.push_back(new Cobblestone(glm::vec3(-2.5f, -3.5f, -0.5f), glm::vec3(-1.5f, -4.5f, 0.5f), stone));
 
-    objects.push_back(new Cobblestone(glm::vec3(0.5f, 0.5f, -3.5f), glm::vec3(1.5f, 1.5f, -2.5f), cobblestone));
-    objects.push_back(new Cobblestone(glm::vec3(0.5f, 0.5f, -0.5f), glm::vec3(1.5f, 1.5f, 0.5f), cobblestone));
-    objects.push_back(new Cobblestone(glm::vec3(0.5f, 3.5f, -0.5f), glm::vec3(1.5f, 4.5f, 0.5f), cobblestone));
-    objects.push_back(new Cobblestone(glm::vec3(0.5f, 3.5f, -3.5f), glm::vec3(1.5f, 4.5f, -2.5f), cobblestone));
+    objects.push_back(new Cobblestone(glm::vec3(0.5f, 0.5f, -3.5f), glm::vec3(1.5f, 1.5f, -2.5f), stone));
+    objects.push_back(new Cobblestone(glm::vec3(0.5f, 0.5f, -0.5f), glm::vec3(1.5f, 1.5f, 0.5f), stone));
+    objects.push_back(new Cobblestone(glm::vec3(0.5f, 3.5f, -0.5f), glm::vec3(1.5f, 4.5f, 0.5f), stone));
+    objects.push_back(new Cobblestone(glm::vec3(0.5f, 3.5f, -3.5f), glm::vec3(1.5f, 4.5f, -2.5f), stone));
 
     // Carbón
-    objects.push_back(new Coal(glm::vec3(-0.5f, -4.5f, -3.5f), glm::vec3(0.5f, -5.5f, -2.5f), coal));
-    objects.push_back(new Coal(glm::vec3(0.5f, -4.5f, -2.5f), glm::vec3(1.5f, -5.5f, -1.5f), coal));
-    objects.push_back(new Coal(glm::vec3(0.5f, -3.5f, -4.5f), glm::vec3(1.5f, -4.5f, -3.5f), coal));
-    objects.push_back(new Coal(glm::vec3(-1.5f, -2.5f, -4.5f), glm::vec3(-0.5f, -3.5f, -3.5f), coal));
-    objects.push_back(new Coal(glm::vec3(-1.5f, -0.5f, -4.5f), glm::vec3(-0.5f, -1.5f, -3.5f), coal));
+    objects.push_back(new Coal(glm::vec3(-0.5f, -4.5f, -3.5f), glm::vec3(0.5f, -5.5f, -2.5f), stone));
+    objects.push_back(new Coal(glm::vec3(0.5f, -4.5f, -2.5f), glm::vec3(1.5f, -5.5f, -1.5f), stone));
+    objects.push_back(new Coal(glm::vec3(0.5f, -3.5f, -4.5f), glm::vec3(1.5f, -4.5f, -3.5f), stone));
+    objects.push_back(new Coal(glm::vec3(-1.5f, -2.5f, -4.5f), glm::vec3(-0.5f, -3.5f, -3.5f), stone));
+    objects.push_back(new Coal(glm::vec3(-1.5f, -0.5f, -4.5f), glm::vec3(-0.5f, -1.5f, -3.5f), stone));
 
     // Cofre
     objects.push_back(new Chest(glm::vec3(-1.5f, -4.5f, -2.5f), glm::vec3(-0.5f, -3.5f, -3.5f), stone));
@@ -284,7 +251,7 @@ void setUp() {
     objects.push_back(new Glass(glm::vec3(-2.5f, -1.5f, -2.5f), glm::vec3(-1.5f, -3.5f, -0.5f), glass));
 
     //Calabaza
-    objects.push_back(new Pumpkin(glm::vec3(-1.5f, 0.5f, -0.5f), glm::vec3(-0.5f, 1.5f, 0.5f), cobblestone));
+    objects.push_back(new Pumpkin(glm::vec3(-1.5f, 0.5f, -0.5f), glm::vec3(-0.5f, 1.5f, 0.5f), stone));
 }
 
 void render() {
@@ -346,6 +313,14 @@ int main(int argc, char* argv[]) {
     ImageLoader::loadImage("pumpkin_front", "../assets/pumpkin_front.png", 800.0f, 800.0f);
     ImageLoader::loadImage("pumpkin_side", "../assets/pumpkin_side.png", 800.0f, 800.0f);
     ImageLoader::loadImage("pumpkin_top", "../assets/pumpkin_top.png", 800.0f, 800.0f);
+    
+    // Cargar Skybox
+    ImageLoader::loadImage("skybox1", "../assets/skybox1.png", 1080.0f, 1080.0f);
+    ImageLoader::loadImage("skybox2", "../assets/skybox2.png", 1080.0f, 1080.0f);
+    ImageLoader::loadImage("skybox3", "../assets/skybox3.png", 1080.0f, 1080.0f);
+    ImageLoader::loadImage("skybox4", "../assets/skybox4.png", 1080.0f, 1080.0f);
+    ImageLoader::loadImage("skybox_ground", "../assets/skybox_ground.png", 1080.0f, 1080.0f);
+    ImageLoader::loadImage("skybox_sky", "../assets/skybox_sky.png", 1080.0f, 1080.0f);
 
     bool running = true;
     SDL_Event event;
