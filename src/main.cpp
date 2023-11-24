@@ -16,7 +16,15 @@
 #include "camera.h"
 
 #include "./materials/grass.h"
+#include "./materials/stone.h"
+#include "./materials/cobblestone.h"
 #include "./materials/gold.h"
+#include "./materials/obsidian.h"
+#include "./materials/rail.h"
+#include "./materials/coal.h"
+#include "./materials/glass.h"
+#include "./materials/chest.h"
+#include "./materials/pumpkin.h"
 
 const int SCREEN_WIDTH = 800;
 const int SCREEN_HEIGHT = 600;
@@ -28,7 +36,7 @@ SDL_Window* window = nullptr;
 SDL_Renderer* renderer = nullptr;
 std::vector<Object*> objects;
 Light light = {glm::vec3(-10.0f, 10.0f, 20.0f), 1.0f, Color(255, 255, 255)};
-Camera camera(glm::vec3(0.0, 2.0, 5.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), 10.0f);
+Camera camera(glm::vec3(-3.0f, 2.0f, 10.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), 10.0f);
 
 bool init() {
     if (SDL_Init(SDL_INIT_VIDEO) != 0) {
@@ -118,7 +126,6 @@ Color castRay(const glm::vec3& rayOrigin, const glm::vec3& rayDirection, const s
         refractedColor = castRay(origin, refractDir, recursion + 1, hitObject); 
     }
 
-    // Elegir color de material o de textura intersectada
     Color materialLight = intersect.hasColor ? intersect.color : mat.diffuse;
 
     Color diffuseLight = materialLight * light.intensity * diffuseLightIntensity * mat.albedo * shadowIntensity;
@@ -137,20 +144,147 @@ void setUp() {
         0.0f
     };
 
+    Material stone = {
+        Color(0, 0, 0),
+        0.85,
+        0.0,
+        0.50f,
+        0.0f,
+        0.0f
+    };
+    
+    Material coal = {
+        Color(0, 0, 0),
+        0.85,
+        0.0,
+        0.50f,
+        0.0f,
+        0.0f
+    };
+    
+    Material rail = {
+        Color(0, 0, 0),
+        0.85,
+        0.0,
+        0.50f,
+        0.0f,
+        0.0f
+    };
+
+    Material cobblestone = {
+        Color(0, 0, 0),
+        0.85,
+        0.0,
+        0.50f,
+        0.0f,
+        0.0f
+    };
+
+    Material obsidian = {
+        Color(0, 0, 0),
+        0.9,
+        0.1f,
+        0.1f,
+        0.1f,
+        0.0f
+    };
+
     Material gold = {
         Color(228, 190, 39),
         1.0f,
         10.0f,
-        0.50f,
+        0.2f,
         0.4f,
         0.0f
     };
 
+    Material glass = {
+        Color(255, 255, 255),
+        0.0f,
+        10.0f,
+        1425.0f,
+        0.2f,
+        1.0f,
+        1.1f
+    };
+
+
     // Grama
-    objects.push_back(new Grass(glm::vec3(-1.5f, -0.5f, -1.5f), glm::vec3(1.5f, 0.5f, 1.5f), grass));
+    objects.push_back(new Grass(glm::vec3(-2.5f, -0.5f, -4.5f), glm::vec3(2.5f, 0.5f, 1.5f), grass));
+
+    // Piedra
+    objects.push_back(new Stone(glm::vec3(-2.5f, -0.5f, 0.5f), glm::vec3(-1.5f, -5.5f, 1.5f), stone));
+    objects.push_back(new Stone(glm::vec3(1.5f, -0.5f, 0.5f), glm::vec3(2.5f, -5.5f, 1.5f), stone));
+
+    objects.push_back(new Stone(glm::vec3(-1.5f, -0.5f, 0.5f), glm::vec3(-0.5f, -1.0f, 1.5f), stone));
+    objects.push_back(new Stone(glm::vec3(-1.5f, -1.0f, 0.5f), glm::vec3(-1.0f, -1.5f, 1.5f), stone));
+    
+    objects.push_back(new Stone(glm::vec3(0.5f, -0.5f, 0.5f), glm::vec3(1.5f, -1.0f, 1.5f), stone));
+    objects.push_back(new Stone(glm::vec3(1.0f, -1.0f, 0.5f), glm::vec3(1.5f, -1.5f, 1.5f), stone));
+
+    objects.push_back(new Stone(glm::vec3(-1.5f, -4.5f, 0.5f), glm::vec3(-0.5f, -4.0f, 1.5f), stone));
+    objects.push_back(new Stone(glm::vec3(-1.5f, -4.0f, 0.5f), glm::vec3(-1.0f, -3.5f, 1.5f), stone));
+
+    objects.push_back(new Stone(glm::vec3(0.5f, -4.5f, 0.5f), glm::vec3(1.5f, -4.0f, 1.5f), stone));
+    objects.push_back(new Stone(glm::vec3(1.0f, -4.0f, 0.5f), glm::vec3(1.5f, -3.5f, 1.5f), stone));
+
+    objects.push_back(new Stone(glm::vec3(-2.5f, -5.5f, -1.5f), glm::vec3(-0.5f, -4.5f, -3.5f), stone));
+    objects.push_back(new Stone(glm::vec3(-2.5f, -0.5f, -4.5f), glm::vec3(-1.5f, -5.5f, -3.5f), stone));
+    objects.push_back(new Stone(glm::vec3(1.5f, -0.5f, -4.5f), glm::vec3(2.5f, -5.5f, -3.5f), stone));
+
+    objects.push_back(new Stone(glm::vec3(-2.5f, -5.5f, 0.5f), glm::vec3(2.5f, -4.5f, -0.5f), stone));
+    objects.push_back(new Stone(glm::vec3(0.5f, -4.5f, -3.5f), glm::vec3(1.5f, -5.5f, -2.5f), stone));
+    objects.push_back(new Stone(glm::vec3(1.5f, -4.5f, -2.5f), glm::vec3(2.5f, -5.5f, -1.5f), stone));
+    objects.push_back(new Stone(glm::vec3(-2.5f, -5.5f, -0.5f), glm::vec3(-1.5f, -4.5f, -1.5f), stone));
+    objects.push_back(new Stone(glm::vec3(-0.5f, -4.5f, 0.5f), glm::vec3(0.5f, -5.0f, 1.5f), stone));
+
+    // Riel
+    objects.push_back(new Rail(glm::vec3(-1.5f, -5.5f, -0.5f), glm::vec3(2.5f, -4.5f, -1.5f), rail));
+
+    // Piedra labrada
+    objects.push_back(new Cobblestone(glm::vec3(-1.5f, -3.5f, -4.5f), glm::vec3(-0.5f, -4.5f, -3.5f), cobblestone));
+    objects.push_back(new Cobblestone(glm::vec3(-0.5f, -3.5f, -4.5f), glm::vec3(0.5f, -4.5f, -3.5f), cobblestone));
+    objects.push_back(new Cobblestone(glm::vec3(0.5f, -0.5f, -4.5f), glm::vec3(1.5f, -1.5f, -3.5f), cobblestone));
+    objects.push_back(new Cobblestone(glm::vec3(-1.5f, -1.5f, -4.5f), glm::vec3(0.5f, -2.5f, -3.5f), cobblestone));
+    objects.push_back(new Cobblestone(glm::vec3(0.5f, -2.5f, -4.5f), glm::vec3(1.5f, -3.5f, -3.5f), cobblestone));
+    objects.push_back(new Cobblestone(glm::vec3(-0.5f, -0.5f, -4.5f), glm::vec3(0.5f, -1.5f, -3.5f), cobblestone));
+    objects.push_back(new Cobblestone(glm::vec3(-0.5f, -4.5f, -2.5f), glm::vec3(0.5f, -5.5f, -1.5f), cobblestone));
+    objects.push_back(new Cobblestone(glm::vec3(1.5f, -4.5f, -3.5f), glm::vec3(2.5f, -5.5f, -2.5f), cobblestone));
+    
+    objects.push_back(new Cobblestone(glm::vec3(-2.5f, -0.5f, -3.5f), glm::vec3(-1.5f, -1.5f, -2.5f), cobblestone));
+    objects.push_back(new Cobblestone(glm::vec3(-2.5f, -0.5f, -0.5f), glm::vec3(-1.5f, -1.5f, 0.5f), cobblestone));
+    objects.push_back(new Cobblestone(glm::vec3(-2.5f, -3.5f, -0.5f), glm::vec3(-1.5f, -4.5f, 0.5f), cobblestone));
+
+    objects.push_back(new Cobblestone(glm::vec3(0.5f, 0.5f, -3.5f), glm::vec3(1.5f, 1.5f, -2.5f), cobblestone));
+    objects.push_back(new Cobblestone(glm::vec3(0.5f, 0.5f, -0.5f), glm::vec3(1.5f, 1.5f, 0.5f), cobblestone));
+    objects.push_back(new Cobblestone(glm::vec3(0.5f, 3.5f, -0.5f), glm::vec3(1.5f, 4.5f, 0.5f), cobblestone));
+    objects.push_back(new Cobblestone(glm::vec3(0.5f, 3.5f, -3.5f), glm::vec3(1.5f, 4.5f, -2.5f), cobblestone));
+
+    // Carbón
+    objects.push_back(new Coal(glm::vec3(-0.5f, -4.5f, -3.5f), glm::vec3(0.5f, -5.5f, -2.5f), coal));
+    objects.push_back(new Coal(glm::vec3(0.5f, -4.5f, -2.5f), glm::vec3(1.5f, -5.5f, -1.5f), coal));
+    objects.push_back(new Coal(glm::vec3(0.5f, -3.5f, -4.5f), glm::vec3(1.5f, -4.5f, -3.5f), coal));
+    objects.push_back(new Coal(glm::vec3(-1.5f, -2.5f, -4.5f), glm::vec3(-0.5f, -3.5f, -3.5f), coal));
+    objects.push_back(new Coal(glm::vec3(-1.5f, -0.5f, -4.5f), glm::vec3(-0.5f, -1.5f, -3.5f), coal));
+
+    // Cofre
+    objects.push_back(new Chest(glm::vec3(-1.5f, -4.5f, -2.5f), glm::vec3(-0.5f, -3.5f, -3.5f), stone));
+
+    // Obsidiana
+    objects.push_back(new Obsidian(glm::vec3(0.5f, 0.5f, -2.5f), glm::vec3(1.5f, 1.5f, -0.5f), obsidian));
+    objects.push_back(new Obsidian(glm::vec3(0.5f, 3.5f, -2.5f), glm::vec3(1.5f, 4.5f, -0.5f), obsidian));
+    objects.push_back(new Obsidian(glm::vec3(0.5f, 1.5f, -3.5f), glm::vec3(1.5f, 3.5f, -2.5f), obsidian));
+    objects.push_back(new Obsidian(glm::vec3(0.5f, 1.5f, -0.5f), glm::vec3(1.5f, 3.5f, 0.5f), obsidian));
 
     //Oro
-    objects.push_back(new Gold(glm::vec3(-0.5f, 0.5f, -0.5f), glm::vec3(0.5f, 1.5f, 0.5f), gold));
+    objects.push_back(new Gold(glm::vec3(-0.5f, -2.5f, -4.5f), glm::vec3(0.5f, -3.5f, -3.5f), gold));
+    objects.push_back(new Gold(glm::vec3(0.5f, -1.5f, -4.5f), glm::vec3(1.5f, -2.5f, -3.5f), gold));
+
+    // Vidrio
+    objects.push_back(new Glass(glm::vec3(-2.5f, -1.5f, -2.5f), glm::vec3(-1.5f, -3.5f, -0.5f), glass));
+
+    //Calabaza
+    objects.push_back(new Pumpkin(glm::vec3(-1.5f, 0.5f, -0.5f), glm::vec3(-0.5f, 1.5f, 0.5f), cobblestone));
 }
 
 void render() {
@@ -159,12 +293,12 @@ void render() {
         for (int x = 0; x < SCREEN_WIDTH; x++) {
 
             // Develop render
-            /*
-            float random_value = static_cast<float>(std::rand())/static_cast<float>(RAND_MAX);
+            
+            /*float random_value = static_cast<float>(std::rand())/static_cast<float>(RAND_MAX);
             if (random_value < 0.5) {
                 continue;
-            }
-*/
+            }*/
+
 
 
             float screenX = (2.0f * (x + 0.5f)) / SCREEN_WIDTH - 1.0f;
@@ -200,6 +334,18 @@ int main(int argc, char* argv[]) {
     ImageLoader::loadImage("grass_side", "../assets/grass_side.png", 800.0f, 800.0f);
     ImageLoader::loadImage("dirt", "../assets/dirt.png", 800.0f, 800.0f);
     ImageLoader::loadImage("gold", "../assets/gold_block.png", 800.0f, 800.0f);
+    ImageLoader::loadImage("stone", "../assets/stone.png", 800.0f, 800.0f);
+    ImageLoader::loadImage("cobblestone", "../assets/cobblestone.png", 800.0f, 800.0f);
+    ImageLoader::loadImage("obsidian", "../assets/obsidian.png", 800.0f, 800.0f);
+    ImageLoader::loadImage("rail", "../assets/rail.png", 800.0f, 800.0f);
+    ImageLoader::loadImage("coal", "../assets/coal.png", 800.0f, 800.0f);
+    ImageLoader::loadImage("glass", "../assets/glass.png", 800.0f, 800.0f);
+    ImageLoader::loadImage("chest_front", "../assets/chest_front.png", 800.0f, 800.0f);
+    ImageLoader::loadImage("chest_top", "../assets/chest_top.png", 800.0f, 800.0f);
+    ImageLoader::loadImage("chest_side", "../assets/chest_side.png", 800.0f, 800.0f);
+    ImageLoader::loadImage("pumpkin_front", "../assets/pumpkin_front.png", 800.0f, 800.0f);
+    ImageLoader::loadImage("pumpkin_side", "../assets/pumpkin_side.png", 800.0f, 800.0f);
+    ImageLoader::loadImage("pumpkin_top", "../assets/pumpkin_top.png", 800.0f, 800.0f);
 
     bool running = true;
     SDL_Event event;
@@ -207,7 +353,7 @@ int main(int argc, char* argv[]) {
     setUp();
 
     while (running) {
-        startFPS();
+        //startFPS();
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT) {
                 running = false;
@@ -222,10 +368,22 @@ int main(int argc, char* argv[]) {
                         camera.rotate(-1.0f, 0.0f);
                         break;
                     case SDLK_w:
-                        camera.move(1.0f);
+                        camera.zoom(1.0f);
                         break;
                     case SDLK_s:
-                        camera.move(-1.0f);
+                        camera.zoom(-1.0f);
+                        break;
+                    case SDLK_UP:
+                        camera.moveY(1.0f);
+                        break;
+                    case SDLK_DOWN:
+                        camera.moveY(-1.0f);
+                        break;
+                    case SDLK_RIGHT:
+                        camera.moveX(1.0f);
+                        break;
+                    case SDLK_LEFT:
+                        camera.moveX(-1.0f);
                         break;
                  }
             }
@@ -241,7 +399,7 @@ int main(int argc, char* argv[]) {
 
         // Present the renderer
         SDL_RenderPresent(renderer);
-        endFPS(window);
+        //endFPS(window);
 
     }
         // Cleanup

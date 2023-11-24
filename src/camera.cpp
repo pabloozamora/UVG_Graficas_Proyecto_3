@@ -13,7 +13,17 @@ void Camera::rotate(float deltaX, float deltaY) {
   position = target + quatRotY * (position - target);
 }
 
-void Camera::move(float deltaZ) {
+void Camera::zoom(float deltaZ) {
   glm::vec3 dir = glm::normalize(target - position);
   position += dir * deltaZ;
+}
+
+void Camera::moveX(float deltaX) {
+    position.x +=  deltaX;
+    target.x += deltaX;
+}
+
+void Camera::moveY(float deltaY) {
+    position.y += deltaY;
+    target.y += deltaY;
 }
