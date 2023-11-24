@@ -26,6 +26,7 @@ Además, implementé un _skybox_ que no solo va acorde a la temática, sino que 
 - W y S: Zoom-in y zoom-out de la cámara
 - A y D: Rotar la cámara
 - ↑ y ↓: Mover verticalmente la cámara
+- ← y →: Mover horizontalmente la cámara
 
 ## Capturas (con skybox)
 ![sb1](https://github.com/pabloozamora/UVG_Graficas_Proyecto_3/assets/77593400/77096bfb-478c-4387-8b95-4ad94e5de0c5)
