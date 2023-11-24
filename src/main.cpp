@@ -95,6 +95,7 @@ Color castRay(const glm::vec3& rayOrigin, const glm::vec3& rayDirection, const s
 
     if (!intersect.isIntersecting || recursion == MAX_RECURSION) {
         return Skybox::getColor(rayOrigin, rayDirection);
+        //return Color(173, 216, 230);
     }
 
 
@@ -175,6 +176,15 @@ void setUp() {
         1.1f
     };
 
+    Material coal = {
+        Color(0, 0, 0),
+        0.85,
+        0.0,
+        0.50f,
+        0.0f,
+        0.0f
+    };
+
 
     // Grama
     objects.push_back(new Grass(glm::vec3(-2.5f, -0.5f, -4.5f), glm::vec3(2.5f, 0.5f, 1.5f), stone));
@@ -228,11 +238,11 @@ void setUp() {
     objects.push_back(new Cobblestone(glm::vec3(0.5f, 3.5f, -3.5f), glm::vec3(1.5f, 4.5f, -2.5f), stone));
 
     // Carbón
-    objects.push_back(new Coal(glm::vec3(-0.5f, -4.5f, -3.5f), glm::vec3(0.5f, -5.5f, -2.5f), stone));
-    objects.push_back(new Coal(glm::vec3(0.5f, -4.5f, -2.5f), glm::vec3(1.5f, -5.5f, -1.5f), stone));
-    objects.push_back(new Coal(glm::vec3(0.5f, -3.5f, -4.5f), glm::vec3(1.5f, -4.5f, -3.5f), stone));
-    objects.push_back(new Coal(glm::vec3(-1.5f, -2.5f, -4.5f), glm::vec3(-0.5f, -3.5f, -3.5f), stone));
-    objects.push_back(new Coal(glm::vec3(-1.5f, -0.5f, -4.5f), glm::vec3(-0.5f, -1.5f, -3.5f), stone));
+    objects.push_back(new Coal(glm::vec3(-0.5f, -4.5f, -3.5f), glm::vec3(0.5f, -5.5f, -2.5f), coal));
+    objects.push_back(new Coal(glm::vec3(0.5f, -4.5f, -2.5f), glm::vec3(1.5f, -5.5f, -1.5f), coal));
+    objects.push_back(new Coal(glm::vec3(0.5f, -3.5f, -4.5f), glm::vec3(1.5f, -4.5f, -3.5f), coal));
+    objects.push_back(new Coal(glm::vec3(-1.5f, -2.5f, -4.5f), glm::vec3(-0.5f, -3.5f, -3.5f), coal));
+    objects.push_back(new Coal(glm::vec3(-1.5f, -0.5f, -4.5f), glm::vec3(-0.5f, -1.5f, -3.5f), coal));
 
     // Cofre
     objects.push_back(new Chest(glm::vec3(-1.5f, -4.5f, -2.5f), glm::vec3(-0.5f, -3.5f, -3.5f), stone));
